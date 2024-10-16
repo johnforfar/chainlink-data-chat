@@ -1,7 +1,7 @@
 { pkgs }:
 pkgs.buildNpmPackage {
   pname = "nextjs-app";
-  version = "0";
+  version = "1.0.0";
   src = ../nextjs-app;
 
   # FIXME: this needs to be updated every time the package-lock.json changes
