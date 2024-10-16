@@ -1,7 +1,7 @@
 import "@/styles/globals.css"
 
 import { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import localFont from "next/font/local"
 
 import { siteConfig } from "@/config/site"
 import { cn } from "@/lib/utils"
@@ -10,11 +10,9 @@ import { Web3Provider } from "@/components/context/web3-provider"
 import { SiteHeader } from "@/components/site-header"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-})
+// Use local copy to avoid having NextJS fetch the file on the Internet during
+// build time
+const inter = localFont({ src: './InterVariable.ttf' })
 
 export const metadata: Metadata = {
   title: {
@@ -48,7 +46,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
-            inter.variable
+            // FIXME: missing property
+            // inter.variable
           )}
         >
           <Web3Provider>
