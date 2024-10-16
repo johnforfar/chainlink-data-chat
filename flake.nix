@@ -37,7 +37,10 @@
         { pkgs, system, ... }:
         {
           package = self.packages.${system}.default;
+          nixos-module = pkgs.callPackage ./nix/nixos-test.nix { };
         }
       );
+
+      nixosModules.default = ./nix/nixos-module.nix;
     };
 }
