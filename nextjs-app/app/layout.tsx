@@ -12,7 +12,9 @@ import { TailwindIndicator } from "@/components/tailwind-indicator"
 
 // Use local copy to avoid having NextJS fetch the file on the Internet during
 // build time
-const inter = localFont({ src: './InterVariable.ttf' })
+const inter = localFont({
+  src: "./InterVariable.ttf",
+})
 
 export const metadata: Metadata = {
   title: {
@@ -45,9 +47,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <head />
         <body
           className={cn(
-            "min-h-screen bg-background font-sans antialiased",
-            // FIXME: missing property
-            // inter.variable
+            "min-h-screen bg-background antialiased",
+            inter.className
           )}
         >
           <Web3Provider>

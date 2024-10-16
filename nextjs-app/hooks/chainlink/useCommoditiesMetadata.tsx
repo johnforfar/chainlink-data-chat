@@ -38,6 +38,7 @@ export function useCommoditiesMetadata({
         })
       )
     },
+    enabled: !!publicClient,
     staleTime: Infinity,
   })
   return commoditiesMetadata

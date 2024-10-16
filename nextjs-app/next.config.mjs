@@ -1,12 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  rewrites: () => [
-    {
-      source: "/indexer/:call*",
-      destination: "https://dci.plopmenz.com/indexer/:call*",
-    },
-  ],
+  output: "standalone",
   reactStrictMode: true,
   webpack: (webpackConfig) => {
     // For web3modal

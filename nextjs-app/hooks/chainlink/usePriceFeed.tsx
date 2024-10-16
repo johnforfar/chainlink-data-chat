@@ -10,7 +10,7 @@ export function usePriceFeed<T extends { address: Address }>({
   const publicClient = usePublicClient()
 
   const { data: priceFeed } = useQuery({
-    queryKey: ["priceFeed", priceFeeds, publicClient],
+    queryKey: ["priceFeed", priceFeeds ?? [], publicClient],
     queryFn: async () => {
       if (!publicClient || !priceFeeds) {
         return undefined
@@ -50,6 +50,7 @@ export function usePriceFeed<T extends { address: Address }>({
         }
       })
     },
+    enabled: !!priceFeeds && !!publicClient,
     refetchInterval: 12 * 1000,
   })
   return priceFeed
