@@ -30,6 +30,15 @@ in
           The port under which the app should be accessible.
         '';
       };
+
+      openFirewall = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = ''
+          Whether to open ports in the firewall for this application.
+        '';
+      };
+
     };
   };
 
@@ -47,6 +56,10 @@ in
         DynamicUser = true;
         CacheDirectory = "nextjs-app";
       };
+    };
+
+    networking.firewall = mkIf cfg.openFirewall {
+      allowedTCPPorts = [ cfg.port ];
     };
   };
 }

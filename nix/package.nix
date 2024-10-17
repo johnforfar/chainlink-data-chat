@@ -34,7 +34,7 @@ pkgs.buildNpmPackage {
     # we set a default port to support "nix run ..."
     makeWrapper $out/share/homepage/server.js $out/bin/nextjs-app \
       --set-default PORT 3000 \
-      --set-default HOSTNAME 127.0.0.1
+      --set-default HOSTNAME 0.0.0.0
 
     runHook postInstall
   '';
