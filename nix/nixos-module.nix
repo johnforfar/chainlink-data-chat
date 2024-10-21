@@ -39,6 +39,23 @@ in
         '';
       };
 
+      siteName = lib.mkOption {
+        type = lib.types.str;
+        default = "Openmesh Chainlink Data Dashboard";
+        example = "Openmesh Chainlink Data Dashboard";
+        description = ''
+          Title and header of the webpage.
+        '';
+      };
+
+      siteDescription = lib.mkOption {
+        type = lib.types.str;
+        default = "Trustless access to Chainlink price feed and CCIP data.";
+        example = "Trustless access to Chainlink price feed and CCIP data.";
+        description = ''
+          Description of the webpage.
+        '';
+      };
     };
   };
 
@@ -50,6 +67,8 @@ in
       environment = {
         HOSTNAME = cfg.hostname;
         PORT = toString cfg.port;
+        NEXT_PUBLIC_SITENAME = cfg.siteName;
+        NEXT_PUBLIC_SITEDESCRIPTION = cfg.siteDescription;
       };
       serviceConfig = {
         ExecStart = "${lib.getExe openmesh-chainlink-data-dashboard}";
