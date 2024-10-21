@@ -1,4 +1,4 @@
-## SmartCon Openmesh Demo
+## Openmesh Chainlink Data Dashboard
 
 Selfhosted website to trustlessly show Chainlink price feed and CCIP information.
 

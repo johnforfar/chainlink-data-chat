@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.services.nextjs-app;
-  nextjs-app = pkgs.callPackage ./package.nix { };
+  cfg = config.services.openmesh-chainlink-data-dashboard;
+  openmesh-chainlink-data-dashboard = pkgs.callPackage ./package.nix { };
 in
 {
   options = {
-    services.nextjs-app = {
+    services.openmesh-chainlink-data-dashboard = {
       enable = lib.mkEnableOption "Enable the nextjs app";
 
       hostname = lib.mkOption {
@@ -43,7 +43,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.nextjs-app = {
+    systemd.services.openmesh-chainlink-data-dashboard = {
       wantedBy = [ "multi-user.target" ];
       description = "Nextjs App.";
       after = [ "network.target" ];
@@ -52,7 +52,7 @@ in
         PORT = toString cfg.port;
       };
       serviceConfig = {
-        ExecStart = "${lib.getExe nextjs-app}";
+        ExecStart = "${lib.getExe openmesh-chainlink-data-dashboard}";
         DynamicUser = true;
         CacheDirectory = "nextjs-app";
       };

@@ -1,5 +1,5 @@
 {
-  description = "SmartCon Openmesh Demo Flake";
+  description = "Selfhosted website to trustlessly show Chainlink price feed and CCIP information.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-unstable";

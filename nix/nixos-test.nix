@@ -3,13 +3,13 @@ let
   testing = import "${toString pkgs.path}/nixos/lib/testing-python.nix" { inherit system pkgs; };
 in
 testing.makeTest {
-  name = "nextjs-app";
+  name = "openmesh-chainlink-data-dashboard";
 
   nodes.machine =
     { pkgs, ... }:
     {
       imports = [ ./nixos-module.nix ];
-      services.nextjs-app = {
+      services.openmesh-chainlink-data-dashboard = {
         enable = true;
         port = 8080;
       };
@@ -17,7 +17,7 @@ testing.makeTest {
 
   testScript = ''
     # Ensure the service is started and reachable
-    machine.wait_for_unit("nextjs-app.service")
+    machine.wait_for_unit("openmesh-chainlink-data-dashboard.service")
     machine.wait_for_open_port(8080)
     machine.succeed("curl --fail http://127.0.0.1:8080")
   '';
