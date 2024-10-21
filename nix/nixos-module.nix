@@ -44,7 +44,7 @@ in
         default = "Openmesh Chainlink Data Dashboard";
         example = "Openmesh Chainlink Data Dashboard";
         description = ''
-          Title and header of the webpage.
+          Title of the webpage.
         '';
       };
 
