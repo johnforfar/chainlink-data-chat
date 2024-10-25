@@ -147,17 +147,20 @@ export function CCIPEvent({
   })
 
   return (
-    <Card>
+    <Card className="max-md:w-[90vw]">
       <CardHeader>
-        <CardTitle>{message.messageId}</CardTitle>
+        <CardTitle className="max-md:text-lg max-md:truncate">
+          {message.messageId}
+        </CardTitle>
         <CardDescription>
           Block {tx.blockNumber.toString()} {timeAgo}
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col">
+      <CardContent className="flex flex-col max-md:text-sm">
         <div>
           <span>Message send to </span>
           <Link
+            className="max-md:text-xs"
             target="_blank"
             href={
               destinationChain
@@ -172,6 +175,7 @@ export function CCIPEvent({
         <div>
           <span>Message sent from </span>
           <Link
+            className="max-md:text-xs"
             target="_blank"
             href={
               sourceChain
@@ -186,6 +190,7 @@ export function CCIPEvent({
           <div>
             <span>Fee </span>
             <Link
+              className="max-md:text-xs"
               target="_blank"
               href={
                 sourceChain

@@ -54,7 +54,7 @@ export function Commodity({
   )
 
   return (
-    <Card className="w-full">
+    <Card className="w-full max-md:w-[90vw]">
       <CardHeader className="w-full flex-row gap-2 place-items-center">
         <Image
           alt={commodity.name}

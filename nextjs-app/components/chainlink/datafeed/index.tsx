@@ -83,18 +83,18 @@ export function DataFeed() {
   return (
     <div className="w-full">
       <div className="flex place-items-center gap-5">
-        <span className="text-2xl underline">Price Feeds</span>
-        <Link className="text-2xl" href="/ccip">
+        <span className="text-2xl max-md:text-base underline">Price Feeds</span>
+        <Link className="text-2xl max-md:text-base" href="/ccip">
           Outgoing CCIP messages
         </Link>
         <div className="grow" />
-        <div className="flex gap-1 place-items-center">
+        <div className="flex gap-1 place-items-center max-md:text-sm">
           <span>Currency: </span>
           <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-md:text-sm">
               <SelectGroup>
                 {currencies.map((currency, i) => (
                   <SelectItem key={i} value={currency.name}>

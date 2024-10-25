@@ -29,12 +29,14 @@ export function CCIP() {
     <div className="w-full">
       <div className="flex flex-col">
         <div className="flex place-items-center gap-5">
-          <Link className="text-2xl" href="/">
+          <Link className="text-2xl max-md:text-base" href="/">
             Price Feeds
           </Link>
-          <span className="text-2xl underline">Outgoing CCIP messages</span>
+          <span className="text-2xl max-md:text-base underline">
+            Outgoing CCIP messages
+          </span>
           <div className="grow" />
-          <div className="flex gap-1 place-items-center">
+          <div className="flex gap-1 place-items-center max-md:text-sm">
             <span>Chain: </span>
             <Select
               value={chainId.toString()}
@@ -43,7 +45,7 @@ export function CCIP() {
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-md:text-sm">
                 <SelectGroup>
                   {[mainnet, polygon, base, arbitrum, optimism].map(
                     (chain, i) => (
@@ -57,7 +59,7 @@ export function CCIP() {
             </Select>
           </div>
         </div>
-        <span className="text-lg font-">
+        <span className="text-lg max-md:text-sm font-">
           Last updated:{" "}
           {dataUpdatedAt === 0
             ? "-"
