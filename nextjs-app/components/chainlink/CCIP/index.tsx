@@ -69,7 +69,7 @@ export function CCIP() {
           ?.slice(0, shown)
           .map((tx, i) => <CCIPEvent key={i} tx={tx} chainId={chainId} />)}
       </div>
-      <div>
+      <div className="mt-3">
         <Button onClick={() => setShown(shown + 10)}>Show more</Button>
       </div>
     </div>
