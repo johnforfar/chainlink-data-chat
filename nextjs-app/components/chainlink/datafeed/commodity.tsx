@@ -1,6 +1,8 @@
 "use client"
 
+import { useMemo } from "react"
 import Image from "next/image"
+import { AxisOptions, Chart } from "react-charts"
 
 import {
   Card,
@@ -19,13 +21,38 @@ export interface CurrencyInfo {
   price: number
 }
 
+export interface HistoryInfo {
+  date: number
+  price: number
+}
+
 export function Commodity({
   commodity,
   currency,
+  history,
 }: {
   commodity: CommodityInfo
   currency: CurrencyInfo
+  history: HistoryInfo[]
 }) {
+  const primaryAxis = useMemo(
+    (): AxisOptions<HistoryInfo> => ({
+      getValue: (item) => item.date,
+      show: false,
+    }),
+    []
+  )
+
+  const secondaryAxes = useMemo(
+    (): AxisOptions<HistoryInfo>[] => [
+      {
+        getValue: (item) => item.price,
+        show: false,
+      },
+    ],
+    []
+  )
+
   return (
     <Card className="w-full">
       <CardHeader className="w-full flex-row gap-2 place-items-center">
@@ -38,11 +65,35 @@ export function Commodity({
         <CardTitle className="text-lg grow md:text-2xl">
           {commodity.name}
         </CardTitle>
-        <CardDescription className="text-sm md:text-xl">
-          {(commodity.price / currency.price)
-            .toFixed(2)
-            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}{" "}
-          {currency.name}
+        <div className="h-10 w-52 pointer-events-none max-md:hidden">
+          {history.length && (
+            <Chart
+              options={{
+                data: [
+                  {
+                    data: history,
+                  },
+                ],
+                primaryAxis,
+                secondaryAxes,
+                tooltip: { show: false },
+              }}
+            />
+          )}
+        </div>
+        <CardDescription className="text-sm md:text-xl flex flex-col text-right">
+          <span>
+            {(commodity.price / currency.price)
+              .toFixed(2)
+              .replace(/\d(?=(\d{3})+\.)/g, "$&,")}{" "}
+            {currency.name}
+          </span>
+          <span className="text-xs md:text-sm">
+            Last updated:{" "}
+            {new Date(
+              history.at(-1)?.date ?? new Date().getTime()
+            ).toLocaleTimeString()}
+          </span>
         </CardDescription>
       </CardHeader>
     </Card>

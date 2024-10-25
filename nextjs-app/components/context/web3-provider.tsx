@@ -10,11 +10,11 @@ import {
   http,
   WagmiProvider,
 } from "wagmi"
-import { mainnet } from "wagmi/chains"
+import { arbitrum, base, mainnet, optimism, polygon } from "wagmi/chains"
 
 import { siteConfig } from "@/config/site"
 
-export const chains = [mainnet] as const
+export const chains = [mainnet, polygon, base, arbitrum, optimism] as const
 export const defaultChain = mainnet
 
 const appName = siteConfig.name
@@ -40,9 +40,33 @@ const config = defaultWagmiConfig({
   transports: {
     [mainnet.id]: fallback([
       http("https://cloudflare-eth.com"),
-      http("https://eth.llamarpc.com"),
       http("https://eth.drpc.org"),
+      http("https://eth.llamarpc.com"),
       http("https://rpc.ankr.com/eth"),
+    ]),
+    [polygon.id]: fallback([
+      http("https://polygon-rpc.com"),
+      http("https://polygon.drpc.org"),
+      http("https://polygon.llamarpc.com"),
+      http("https://rpc.ankr.com/polygon"),
+    ]),
+    [base.id]: fallback([
+      http("https://mainnet.base.org"),
+      http("https://base.drpc.org"),
+      http("https://base.llamarpc.com"),
+      http("https://rpc.ankr.com/base"),
+    ]),
+    [arbitrum.id]: fallback([
+      http("https://arb1.arbitrum.io/rpc"),
+      http("https://arbitrum.drpc.org"),
+      http("https://arbitrum.llamarpc.com"),
+      http("https://rpc.ankr.com/arbitrum"),
+    ]),
+    [optimism.id]: fallback([
+      http("https://mainnet.optimism.io"),
+      http("https://optimism.drpc.org"),
+      http("https://optimism.llamarpc.com"),
+      http("https://rpc.ankr.com/optimism"),
     ]),
   },
   auth: {

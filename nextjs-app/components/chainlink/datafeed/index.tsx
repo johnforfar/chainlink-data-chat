@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import Link from "next/link"
 
 import { useCommoditiesMetadata } from "@/hooks/chainlink/useCommoditiesMetadata"
 import { useCurrenciesMetadata } from "@/hooks/chainlink/useCurrenciesMetadata"
@@ -14,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { Commodity } from "./commodity"
+import { Commodity, HistoryInfo } from "./commodity"
 
 // Should all be in USD to support currency change
 const commoditiesENS = [
@@ -44,8 +45,12 @@ export function DataFeed() {
   const commoditiesMetadata = useCommoditiesMetadata({ commoditiesENS })
   const currenciesMetadata = useCurrenciesMetadata({ currenciesENS })
 
-  const commodities = usePriceFeed({ priceFeeds: commoditiesMetadata })
-  const extraCurrencies = usePriceFeed({ priceFeeds: currenciesMetadata })
+  const { priceFeed: commodities, dataUpdatedAt } = usePriceFeed({
+    priceFeeds: commoditiesMetadata,
+  })
+  const { priceFeed: extraCurrencies } = usePriceFeed({
+    priceFeeds: currenciesMetadata,
+  })
 
   const currencies = [defaultCurrency].concat(extraCurrencies ?? [])
 
@@ -53,10 +58,36 @@ export function DataFeed() {
     defaultCurrency.name
   )
 
+  const [commodityHistory, setCommodityHistory] = useState<{
+    [name: string]: HistoryInfo[]
+  }>({})
+  useEffect(() => {
+    if (!commodities) {
+      return
+    }
+
+    const history = { ...commodityHistory }
+    commodities.forEach((commodity) => {
+      if (!history[commodity.name]) {
+        history[commodity.name] = []
+      }
+
+      history[commodity.name].push({
+        date: dataUpdatedAt,
+        price: commodity.price,
+      })
+    })
+    setCommodityHistory(history)
+  }, [dataUpdatedAt])
+
   return (
     <div className="w-full">
-      <div className="flex place-items-center">
-        <span className="text-2xl grow">Chainlink Price Feeds</span>
+      <div className="flex place-items-center gap-5">
+        <span className="text-2xl underline">Price Feeds</span>
+        <Link className="text-2xl" href="/ccip">
+          Outgoing CCIP messages
+        </Link>
+        <div className="grow" />
         <div className="flex gap-1 place-items-center">
           <span>Currency: </span>
           <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
@@ -84,6 +115,7 @@ export function DataFeed() {
               currencies.find((c) => c.name === selectedCurrency) ||
               defaultCurrency
             }
+            history={commodityHistory[commodity.name] ?? []}
           />
         ))}
       </div>

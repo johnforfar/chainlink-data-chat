@@ -6,10 +6,13 @@ export function usePriceFeed<T extends { address: Address }>({
   priceFeeds,
 }: {
   priceFeeds: T[] | undefined
-}): (T & { price: number })[] | undefined {
+}): {
+  priceFeed: (T & { price: number })[] | undefined
+  dataUpdatedAt: number
+} {
   const publicClient = usePublicClient()
 
-  const { data: priceFeed } = useQuery({
+  const { data: priceFeed, dataUpdatedAt } = useQuery({
     queryKey: ["priceFeed", priceFeeds ?? [], publicClient],
     queryFn: async () => {
       if (!publicClient || !priceFeeds) {
@@ -53,7 +56,7 @@ export function usePriceFeed<T extends { address: Address }>({
     enabled: !!priceFeeds && !!publicClient,
     refetchInterval: 12 * 1000,
   })
-  return priceFeed
+  return { priceFeed, dataUpdatedAt }
 }
 
 const aggregatorV3InterfaceABI = [
