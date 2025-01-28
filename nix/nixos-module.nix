@@ -56,20 +56,31 @@ in
           Description of the webpage.
         '';
       };
+
+      llmPort = lib.mkOption {
+        type = lib.types.port;
+        default = 8080;
+        description = "Port for the LLM service";
+      };
     };
   };
 
   config = lib.mkIf cfg.enable {
     systemd.services.chainlink-ai-search = {
       wantedBy = [ "multi-user.target" ];
-      description = "Nextjs App.";
+      description = "Nextjs App";
       after = [ "network.target" ];
-      environment = {
-        HOSTNAME = cfg.hostname;
-        PORT = toString cfg.port;
-        NEXT_PUBLIC_SITENAME = cfg.siteName;
-        NEXT_PUBLIC_SITEDESCRIPTION = cfg.siteDescription;
-      };
+      
+      environment = lib.mkMerge [
+        {
+          BACKEND_HOST = cfg.hostname;
+          BACKEND_PORT = toString cfg.port;
+          NEXT_PUBLIC_SITENAME = cfg.siteName;
+          NEXT_PUBLIC_SITEDESCRIPTION = cfg.siteDescription;
+          LLM_SERVICE_URL = "http://localhost:${toString cfg.llmPort}";
+        }
+      ];
+
       serviceConfig = {
         ExecStart = "${lib.getExe chainlink-ai-search}";
         DynamicUser = true;
@@ -78,7 +89,7 @@ in
     };
 
     networking.firewall = lib.mkIf cfg.openFirewall {
-      allowedTCPPorts = [ cfg.port ];
+      allowedTCPPorts = [ cfg.port cfg.llmPort ];
     };
   };
 }

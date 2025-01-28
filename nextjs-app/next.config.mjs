@@ -9,7 +9,9 @@ const nextConfig = {
   },
   env: {
     POSTGRES_HOST: process.env.POSTGRES_HOST || 'localhost',
-    POSTGRES_PORT: process.env.POSTGRES_PORT || '5432'
+    POSTGRES_PORT: process.env.POSTGRES_PORT || '5432',
+    BACKEND_PORT: process.env.BACKEND_PORT || '3003',
+    BACKEND_HOST: process.env.BACKEND_HOST || '0.0.0.0'
   }
 }
 

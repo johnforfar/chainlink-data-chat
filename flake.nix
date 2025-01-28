@@ -19,46 +19,36 @@
         );
     in
     {
-      nixosModules.default = { config, lib, pkgs, ... }: {
-        imports = [ ./nix/postgresql.nix ./nix/vector-search.nix ./nix/llm.nix ];
-        
+      nixosModules.default = { config, ... }: {
+        imports = [
+          ./nix/nixos-module.nix
+          ./nix/postgresql.nix
+          ./nix/llm.nix
+        ];
+
         services.chainlink-ai-search = {
-          enable = lib.mkEnableOption "Enable the AI chatbot service";
-          
+          enable = true;
+          llm.enable = true;
           database = {
-            host = lib.mkOption {
-              type = lib.types.str;
-              default = "localhost";
-              description = "PostgreSQL database host";
-            };
-            
-            port = lib.mkOption {
-              type = lib.types.port;
-              default = 5432;
-              description = "PostgreSQL database port";
-            };
-          };
-          
-          llm = {
-            model = lib.mkOption {
-              type = lib.types.str;
-              default = "unsloth/DeepSeek-R1-GGUF";
-              description = "DeepSeek R1 model path";
-            };
-            
-            quantization = lib.mkOption {
-              type = lib.types.str;
-              default = "UD-IQ1_S";
-              description = "Quantization type (UD-IQ1_S for 1.58-bit)";
-            };
-            
-            gpuLayers = lib.mkOption {
-              type = lib.types.int;
-              default = 61;
-              description = "Number of layers to offload to GPU";
-            };
+            host = "localhost";
+            port = 5432;
           };
         };
       };
+
+      packages = eachSystem (
+        { system, pkgs }: {
+          default = pkgs.callPackage ./nix/package.nix { inherit system; };
+        }
+      );
+
+      apps = eachSystem (
+        { system, pkgs }: {
+          default = {
+            type = "app";
+            program = "${self.packages.${system}.default}/bin/chainlink-ai-search";
+          };
+        }
+      );
     };
 }

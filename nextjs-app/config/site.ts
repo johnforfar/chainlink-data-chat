@@ -1,6 +1,6 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "Openmesh Chainlink Data Dashboard",
-  description: "Trustless access to Chainlink price feed and CCIP data.",
+  name: "Chainlink AI Search",
+  description: "AI-powered search for Chainlink price feeds and CCIP data.",
 } as const

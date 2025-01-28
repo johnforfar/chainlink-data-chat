@@ -1,4 +1,5 @@
 import { Client } from 'pg'
+import { Console } from 'console'
 import { createEmbedding } from '@/lib/embeddings'
 
 declare global {
@@ -15,6 +16,7 @@ declare global {
 
 export class VectorSearch {
   private client: Client
+  private logger: Console
 
   constructor() {
     this.client = new Client({
@@ -23,6 +25,10 @@ export class VectorSearch {
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB || 'chainlink_data'
+    })
+    this.logger = new Console({
+      stdout: process.stdout,
+      stderr: process.stderr,
     })
   }
 
@@ -35,6 +41,7 @@ export class VectorSearch {
   }
 
   async search(query: string, limit: number = 5) {
+    this.logger.log(`Searching for: "${query}" with limit ${limit}`)
     const embedding = await createEmbedding(query)
     
     const result = await this.client.query(`
@@ -44,6 +51,7 @@ export class VectorSearch {
       LIMIT $2
     `, [embedding, limit])
     
+    this.logger.log(`Found ${result.rows.length} results`)
     return result.rows
   }
 } 

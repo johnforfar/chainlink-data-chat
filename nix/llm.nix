@@ -7,6 +7,13 @@ let
     "DeepSeek-R1-UD-IQ1_S-00002-of-00003.gguf"
     "DeepSeek-R1-UD-IQ1_S-00003-of-00003.gguf"
   ];
+  modelConfig = if pkgs.stdenv.isAarch64 then {
+    gpuLayers = 0;
+    contextSize = 4096;
+  } else {
+    gpuLayers = cfg.llm.gpuLayers;
+    contextSize = cfg.llm.contextSize;
+  };
 in {
   options = {
     services.chainlink-ai-search.llm = {
@@ -28,6 +35,12 @@ in {
         type = lib.types.int;
         default = 8192;
         description = "Context window size";
+      };
+
+      gpuLayers = lib.mkOption {
+        type = lib.types.int;
+        default = 61;
+        description = "Number of layers to offload to GPU";
       };
     };
   };
@@ -67,8 +80,8 @@ in {
         ExecStart = ''
           ${pkgs.llama-cpp}/bin/llama-server \
             --model ${cfg.llm.modelDir}/merged_model.gguf \
-            --ctx-size ${toString cfg.llm.contextSize} \
-            --n-gpu-layers ${toString cfg.llm.gpuLayers} \
+            --ctx-size ${toString modelConfig.contextSize} \
+            --n-gpu-layers ${toString modelConfig.gpuLayers} \
             --temp ${toString cfg.llm.temperature} \
             --port 8080
         '';
@@ -87,5 +100,4 @@ in {
 
     users.groups.chainlink = {};
   };
-} 
 } 

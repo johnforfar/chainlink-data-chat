@@ -22,6 +22,8 @@ export function ChainlinkChatbot() {
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault()
       
+      console.log("Form submitted with input:", input)
+      
       // Add user message
       const userMessage: Message = {
         role: "user",
@@ -32,7 +34,40 @@ export function ChainlinkChatbot() {
       setMessages(prev => [...prev, userMessage])
       setInput("")
       
-      // TODO: Add API call to backend for AI processing
+      try {
+        console.log("Attempting to call AI backend...")
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: input }),
+        })
+        
+        console.log("Response received:", response.status)
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        
+        const data = await response.json()
+        console.log("AI response data:", data)
+        
+        // Add AI response to messages
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: data.response,
+          timestamp: Date.now()
+        }])
+      } catch (error) {
+        console.error("Error calling AI backend:", error)
+        // Optionally add an error message to the chat
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: "Sorry, I encountered an error processing your request.",
+          timestamp: Date.now()
+        }])
+      }
     }
 
   return (
