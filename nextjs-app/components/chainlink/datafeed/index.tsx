@@ -18,7 +18,7 @@ import {
 import { Commodity, HistoryInfo } from "./commodity"
 
 // Should all be in USD to support currency change
-const commoditiesENS = [
+export const commoditiesENS = [
   "total-marketcap-usd",
   "btc-usd",
   "eth-usd",
@@ -28,15 +28,15 @@ const commoditiesENS = [
   "usdc-usd",
   // "xrp-usd",
   "link-usd",
-]
+] as const
 
 // Should all be in USD to support currency change
-const currenciesENS = [
+export const currenciesENS = [
   "eur-usd",
   "gbp-usd",
   "aud-usd",
   ...commoditiesENS.slice(1),
-]
+] as const
 
 // You can also use non-USD price feeds and change the default currency (however all commodities and currencies be denoted in this same default currency)
 const defaultCurrency = { name: "USD", price: 1 }
