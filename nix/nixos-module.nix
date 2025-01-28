@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.services.openmesh-chainlink-data-dashboard;
-  openmesh-chainlink-data-dashboard = pkgs.callPackage ./package.nix { };
+  cfg = config.services.chainlink-ai-search;
+  chainlink-ai-search = pkgs.callPackage ./package.nix { };
 in
 {
   options = {
-    services.openmesh-chainlink-data-dashboard = {
+    services.chainlink-ai-search = {
       enable = lib.mkEnableOption "Enable the nextjs app";
 
       hostname = lib.mkOption {
@@ -41,8 +41,8 @@ in
 
       siteName = lib.mkOption {
         type = lib.types.str;
-        default = "Openmesh Chainlink Data Dashboard";
-        example = "Openmesh Chainlink Data Dashboard";
+        default = "Chainlink AI Search";
+        example = "Chainlink AI Search";
         description = ''
           Title of the webpage.
         '';
@@ -50,8 +50,8 @@ in
 
       siteDescription = lib.mkOption {
         type = lib.types.str;
-        default = "Trustless access to Chainlink price feed and CCIP data.";
-        example = "Trustless access to Chainlink price feed and CCIP data.";
+        default = "AI-powered search for Chainlink price feeds and CCIP data.";
+        example = "AI-powered search for Chainlink price feeds and CCIP data.";
         description = ''
           Description of the webpage.
         '';
@@ -60,7 +60,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.openmesh-chainlink-data-dashboard = {
+    systemd.services.chainlink-ai-search = {
       wantedBy = [ "multi-user.target" ];
       description = "Nextjs App.";
       after = [ "network.target" ];
@@ -71,7 +71,7 @@ in
         NEXT_PUBLIC_SITEDESCRIPTION = cfg.siteDescription;
       };
       serviceConfig = {
-        ExecStart = "${lib.getExe openmesh-chainlink-data-dashboard}";
+        ExecStart = "${lib.getExe chainlink-ai-search}";
         DynamicUser = true;
         CacheDirectory = "nextjs-app";
       };

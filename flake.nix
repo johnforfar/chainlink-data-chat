@@ -22,7 +22,7 @@
       nixosModules.default = { config, lib, pkgs, ... }: {
         imports = [ ./nix/postgresql.nix ./nix/vector-search.nix ./nix/llm.nix ];
         
-        services.openmesh-chainlink-data-dashboard = {
+        services.chainlink-ai-search = {
           enable = lib.mkEnableOption "Enable the AI chatbot service";
           
           database = {

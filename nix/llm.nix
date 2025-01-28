@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.services.openmesh-chainlink-data-dashboard;
+  cfg = config.services.chainlink-ai-search;
   modelFiles = [
     "DeepSeek-R1-UD-IQ1_S-00001-of-00003.gguf"
     "DeepSeek-R1-UD-IQ1_S-00002-of-00003.gguf"
@@ -9,7 +9,7 @@ let
   ];
 in {
   options = {
-    services.openmesh-chainlink-data-dashboard.llm = {
+    services.chainlink-ai-search.llm = {
       enable = lib.mkEnableOption "Enable local LLM service";
       
       modelDir = lib.mkOption {

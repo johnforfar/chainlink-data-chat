@@ -1,6 +1,6 @@
-## Openmesh Chainlink Data Dashboard
+## Chainlink AI Search
 
-Selfhosted website to trustlessly show Chainlink price feed and CCIP information.
+AI-powered website to search and analyze Chainlink price feed and CCIP information.
 
 ## Commands (in root folder)
 

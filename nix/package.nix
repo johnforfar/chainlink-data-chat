@@ -1,6 +1,6 @@
 { pkgs }:
 pkgs.buildNpmPackage {
-  pname = "openmesh-chainlink-data-dashboard";
+  pname = "chainlink-ai-search";
   version = "1.0.0";
   src = ../nextjs-app;
 
@@ -32,7 +32,7 @@ pkgs.buildNpmPackage {
     chmod +x $out/share/homepage/server.js
 
     # we set a default port to support "nix run ..."
-    makeWrapper $out/share/homepage/server.js $out/bin/openmesh-chainlink-data-dashboard \
+    makeWrapper $out/share/homepage/server.js $out/bin/chainlink-ai-search \
       --set-default PORT 3000 \
       --set-default HOSTNAME 0.0.0.0
 
@@ -42,6 +42,6 @@ pkgs.buildNpmPackage {
   doDist = false;
 
   meta = {
-    mainProgram = "openmesh-chainlink-data-dashboard";
+    mainProgram = "chainlink-ai-search";
   };
 }
