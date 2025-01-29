@@ -16,9 +16,11 @@ testing.makeTest {
     };
 
   testScript = ''
-    # Ensure the service is started and reachable
     machine.wait_for_unit("chainlink-ai-search.service")
-    machine.wait_for_open_port(8080)
-    machine.succeed("curl --fail http://127.0.0.1:8080")
+    machine.wait_for_unit("chainlink-ai-llm.service")
+    machine.wait_for_open_port(3003)  # Frontend
+    machine.wait_for_open_port(8080)  # LLM service
+    machine.succeed("curl --fail http://127.0.0.1:3003")
+    machine.succeed("curl --fail http://127.0.0.1:8080/health")
   '';
 }
